@@ -3,9 +3,22 @@ const Schema = mongoose.Schema;
 const passportLocalMongoose = require('passport-local-mongoose');
 
 const UserSchema = new Schema({
-    username: String,
-    password: String,
-    email: String,
+    username: {
+      type: String,
+      unique: true,
+      required: true,
+      trim: true
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+      trim: true
+    },
     firstname: String,
     lastname: String,
     image: String,
@@ -13,6 +26,7 @@ const UserSchema = new Schema({
     createdDate: { type: Date, default: Date.now }
 });
 
+UserSchema.plugin(passportLocalMongoose);
 
 //hashing a password before saving it to the database
 UserSchema.pre('save', function (next) {
@@ -25,6 +39,9 @@ UserSchema.pre('save', function (next) {
       next();
     })
   });
+
+
+
 
   var User = mongoose.model('User', UserSchema);
   module.exports = User;

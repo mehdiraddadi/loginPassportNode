@@ -33,7 +33,7 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'))
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -41,6 +41,16 @@ app.use('/users', usersRouter);
 // passport config
 var User = require('./models/user');
 
+// use static authenticate method of model in LocalStrategy
+passport.use(new LocalStrategy(User.authenticate()));
+
+// use static serialize and deserialize of model for passport session support
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+// mongoose
+mongoose.connect('mongodb://localhost:27017/db_ebook', { useNewUrlParser: true });
+
+/* 
 passport.use(new LocalStrategy(
   function(username, password, done) {
       User.findOne({ username: username }, function (err, user) {
@@ -52,8 +62,6 @@ passport.use(new LocalStrategy(
   }
 )); 
 
-// mongoose
-mongoose.connect('mongodb://localhost:27017/db_ebook', { useNewUrlParser: true });
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -63,7 +71,7 @@ passport.deserializeUser(function(id, done) {
   User.findById(id, function (err, user) {
       done(err, user);
   });
-});
+}); */
 
 
 // catch 404 and forward to error handler
