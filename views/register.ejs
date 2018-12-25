@@ -1,4 +1,7 @@
 <% extend('layout') %>
+<% if(error) {%>
+	<span><%= error.message%></span>
+<% } %>		
 <form id="register-form" class="form" action="" method="post">
 		<div class="container">
 			<div class="row main">
@@ -9,7 +12,7 @@
 	               	</div>
 	            </div> 
 				<div class="main-login main-center">
-					<form class="form-horizontal" method="post" action="#">
+					<form class="form-horizontal" method="post" action="">
 						
 						<div class="form-group">
 							<label for="firstname" class="cols-sm-2 control-label">Your firstname</label>
